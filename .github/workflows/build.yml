@@ -49,6 +49,11 @@ jobs:
           print("wrote build-system/mango-configuration.json")
           PY
 
+      - name: Regenerate fake provisioning profiles
+        working-directory: /Users/Shared/telegram-ios
+        run: |
+          python3 build-system/regenerate_fake_profiles.py
+
       - name: Build the App (unsigned)
         working-directory: /Users/Shared/telegram-ios
         run: |
