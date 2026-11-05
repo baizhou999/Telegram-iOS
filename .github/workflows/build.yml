@@ -35,13 +35,15 @@ jobs:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
         run: |
-          python3 - build-system/template_minimal_development_configuration.json <<'PY'
+          python3 - build-system/appstore-configuration.json <<'PY'
           import json, os, sys
           cfg = json.load(open(sys.argv[1]))
           cfg["bundle_id"] = "app.mango.im.ios"
           cfg["api_id"] = os.environ["API_ID"]
           cfg["api_hash"] = os.environ["API_HASH"]
           cfg["team_id"] = "JXU4H6AF77"
+          cfg["enable_siri"] = False
+          cfg["enable_icloud"] = False
           with open("build-system/mango-configuration.json", "w") as f:
               json.dump(cfg, f, indent=2)
           print("wrote build-system/mango-configuration.json")
