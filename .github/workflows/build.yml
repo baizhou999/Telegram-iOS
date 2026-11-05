@@ -85,9 +85,23 @@ jobs:
           OUTPUT_PATH="build/artifacts"
           rm -rf "$OUTPUT_PATH"
           mkdir -p "$OUTPUT_PATH"
-          for f in bazel-out/applebin_ios-ios_arm*-opt-ST-*/bin/Telegram/Telegram.ipa; do
-            cp "$f" "$OUTPUT_PATH/"
-          done
+
+          IPA_PATH="$(find bazel-out -name 'Telegram.ipa' -type f 2>/dev/null | head -n 1)"
+          if [[ -z "$IPA_PATH" ]]; then
+            IPA_PATH="$(find bazel-bin -name 'Telegram.ipa' -type f 2>/dev/null | head -n 1)"
+          fi
+
+          echo "Resolved IPA path: $IPA_PATH"
+          if [[ -z "$IPA_PATH" ]]; then
+            echo "ERROR: Telegram.ipa not found" >&2
+            echo "--- all *.ipa under bazel-out:" >&2
+            find bazel-out -name '*.ipa' 2>/dev/null | head -n 50 >&2
+            echo "--- Telegram dir under bazel-bin:" >&2
+            ls -la bazel-bin/Telegram/ 2>/dev/null >&2
+            exit 1
+          fi
+
+          cp "$IPA_PATH" "$OUTPUT_PATH/"
           ls -la "$OUTPUT_PATH"
 
       - name: Upload IPA
