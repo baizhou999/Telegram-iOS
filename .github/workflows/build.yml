@@ -41,7 +41,6 @@ jobs:
           cfg["bundle_id"] = "app.mango.im.ios"
           cfg["api_id"] = os.environ["API_ID"]
           cfg["api_hash"] = os.environ["API_HASH"]
-          cfg["team_id"] = "JXU4H6AF77"
           cfg["enable_siri"] = False
           cfg["enable_icloud"] = False
           with open("build-system/mango-configuration.json", "w") as f:
